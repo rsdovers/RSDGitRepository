@@ -75,7 +75,9 @@ function Get-USCitizenCapability {
             $Capabilities['Vote'] = $true
         }
 
-        New-Object -Property $Capabilities -TypeName psobject
+        @pscustomobject {
+            
+        }
     }
 }
 ```
