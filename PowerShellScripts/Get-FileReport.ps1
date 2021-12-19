@@ -17,6 +17,7 @@ $files = Get-ChildItem $foldername -Attributes !Directory
  
 # Calculate size in MB for files
 $size = $Null
+$null = $size
 $files | ForEach-Object -Process {
 $size += $_.Length
 }
