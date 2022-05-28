@@ -1,3 +1,11 @@
+<#
+Parts of this script is exactly what I was looking for to help make it easy to navigate
+the SQLSERVER:\ path. The -path parameter is on each of the AG cmdlets used to failover
+and test the AG, Replica, and databases. Also, the way of swaping the blank instance name
+to DEFAULT is in here, and I like the way that it uses varables to simplify the long path
+names. The script is missing Test-SqlDatabaseReplicas, but that would be easy to add using
+$Path = "SQLSERVER:\Sql\$Name\$InstanceName\AvailabilityGroups\$AgName\DatabaseReplicaStates"
+#>
 $server='your servername'
 
 $srv = New-Object Microsoft.SqlServer.Management.Smo.Server $Server
