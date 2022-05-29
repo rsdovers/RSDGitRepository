@@ -6,6 +6,22 @@ to DEFAULT is in here, and I like the way that it uses varables to simplify the 
 names. The script is missing Test-SqlDatabaseReplicas, but that would be easy to add using
 $Path = "SQLSERVER:\Sql\$Name\$InstanceName\AvailabilityGroups\$AgName\DatabaseReplicaStates"
 #>
+
+<##
+Find an availability group's primary server
+set $ServerName to any node that's part of the AG that you're interested in
+ 
+$ServerName = 'SQL01'
+ 
+[reflection.assembly]::LoadWithPartialName("Microsoft.SqlServer.Smo") | out-null
+$svr = New-Object ('Microsoft.SqlServer.Management.Smo.Server') $ServerName;
+$svr.ConnectionContext.StatementTimeout = 0;
+ 
+foreach ($AvailabilityGroup in $svr.AvailabilityGroups)
+{
+    Write-Host "$($AvailabilityGroup.Name) : $($AvailabilityGroup.PrimaryReplicaServerName)"
+}
+#>
 $server='your servername'
 
 $srv = New-Object Microsoft.SqlServer.Management.Smo.Server $Server
