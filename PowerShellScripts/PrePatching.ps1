@@ -73,3 +73,12 @@ $srv = New-Object Microsoft.SqlServer.Management.Smo.Server $Server
 
         $AGState
         $srv.ConnectionContext.Disconnect()
+
+
+$servername
+[System.Reflection.Assembly]::LoadWithPartialName("Microsoft.SqlServer.Smo") | Out-Null
+$SqlServer = New-Object Microsoft.SqlServer.Management.Smo.Server("$servername")
+<#
+Need to get the names of all AG's on this instance so we can provide the AGNmae below
+#>
+$SqlServer.AvailabilityGroups["AvailabilityGroupsName "].AvailabilityReplicas | Where-Object {$_.Name -eq $SqlServer.Name} | Select-Object Name, Role, OperationalState, ConnectionState
