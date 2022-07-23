@@ -1,0 +1,36 @@
+{
+    "target": { //Target describes a SQL Server object the check is supposed to run against
+        "type": "Database", //This check targets Database object
+        "version": "[13.0,)", //Applies to SQL Server 2016 and higher
+        //Another example: "[12.0,13.0)" reads as "any SQL Server version >= 12.0 and < 13.0"
+        "platform": "Windows, Linux", //Applies to SQL Server on Windows and Linux
+        "engineEdition": "OnPremises, ManagedInstance", //Applies to SQL on Premises and Azure SQL Managed Instance. Here you can also filter specific editions of SQL Server
+        "name": {
+            "not": "/^(master|tempdb|model)$/"
+        } //Applies to any database excluding master, tempdb, and msdb
+    },
+    "id": "QueryStoreOn", //Rule ID
+    "itemType": "definition", //Can be "definition" or "override". First is to declare a rule, the latter is to override/customize an existing rule. See also DisablingBuiltInChecks_sample.json
+    "tags": [
+        "CustomRuleset",
+        "Performance",
+        "QueryStore",
+        "Statistics"
+    ], //Tags combine rules in different subsets.
+    "displayName": "Query Store should be active", //Short name for the rule
+    "description": "The Query Store feature provides you with insight on query plan choice and performance. It simplifies performance troubleshooting by helping you quickly find performance differences caused by query plan changes. Query Store automatically captures a history of queries, plans, and runtime statistics, and retains these for your review. It separates data by time windows so you can see database usage patterns and understand when query plan changes happened on the server. While Query Store collects queries, execution plans and statistics, its size in the database grows until this limit is reached. When that happens, Query Store automatically changes the operation mode to read-only and stops collecting new data, which means that your performance analysis is no longer accurate.",
+    //A more detailed explanation of a best practice or policy that the rule check
+    "message": "Make sure Query Store actual operation mode is 'Read Write' to keep your performance analysis accurate",
+    //Usually, it's for recommendation what user should do if the rule raises up an alert
+    "helpLink": "https://docs.microsoft.com/sql/relational-databases/performance/monitoring-performance-by-using-the-query-store",
+    //Reference material
+    "probes": [
+        "Custom_DatabaseConfiguration"
+    ], //List of probes that are used to get the required data for this check. See below to know more about probes.
+    "condition": { //Condition object is to define "good" and "bad" state, the latter is when the rule should raise an alert. When the condition is true, it means that the checked object complies with the best practice or policy. Otherwise, the rule raises an alert (it actually adds its message to the resulting set of recommendations)
+        "equal": [
+            "@query_store_state",
+            2
+        ] //It means that the variable came from the probe should be equal to 2
+    }
+}
