@@ -1,4 +1,42 @@
 {
+    "schemaVersion": "1.0",
+    "version": "0.1.2",
+	"name": "Custom Ruleset 7",
+    "probes":{
+        "ManagedCodeRuleProbe": [
+            {
+                "type": "External",
+                "target": {
+                  "type": "Server"
+                },
+                "implementation": {
+                  "class": "TestsProbeLibrary.Probe2",
+                  "assembly": "C:\\SQLAsmnt\\CustomizationSamples\\TestsProbeLibrary.dll"
+                }
+            }
+        ]
+     },
+    "rules":[
+        {
+            "id": ["DefaultRuleset"],
+            "itemType": "override",
+            "enabled": false
+        },
+        {
+            "id": "ManagedCodeRule",
+            "itemType": "definition",
+            "displayName": "Check uses 3rd-party assembly",
+            "description": "This is an example of a check using an assembly to get required data.",
+            "message": "Method from the assembly returned a number greater than the threshold: @{ActualCpuUtilization} > @{threshold}.",
+            "target": { "type": "Server" },
+            "probes": ["ManagedCodeRuleProbe"],
+            "threshold": 83,
+            "condition": { "less": ["@ActualCpuUtilization", "@threshold"]  }
+        }
+    ]
+}
+
+{
     "target": { //Target describes a SQL Server object the check is supposed to run against
         "type": "Database", //This check targets Database object
         "version": "[13.0,)", //Applies to SQL Server 2016 and higher
