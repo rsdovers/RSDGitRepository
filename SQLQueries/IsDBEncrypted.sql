@@ -4,7 +4,9 @@ SELECT
     dm.encryption_state,
     dm.percent_complete,
     dm.key_algorithm,
-    dm.key_length
+    dm.key_length,
+    db.create_date,
+    SERVERPROPERTY('Edition')
 FROM
     sys.databases db
     LEFT OUTER JOIN sys.dm_database_encryption_keys dm
